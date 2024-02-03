@@ -351,7 +351,7 @@ implemnetar HTTPS, implementar Helmet
   3. Se Implementa la interfaz (clase).
   4 . Y se expone el servicio web en Startup.cs
 
-10. Explica brevemente cómo podrías utilizar Docker para contenerizar aplicaciones desarrolladas en Node.js y ASP.NET Core. 
+20. Explica brevemente cómo podrías utilizar Docker para contenerizar aplicaciones desarrolladas en Node.js y ASP.NET Core. 
 
   1. Crear un Dockerfile (segun sea el caso): Define el entorno de ejecución, instala las dependencias y configura la aplicación
   2. Construir la imagen de Docker: Ejecuta docker build para crear la imagen a partir del Dockerfile
