@@ -1,0 +1,359 @@
+1. Crea una aplicación simple de Node.js con Express que tenga una ruta GET '/saludo' que devuelva un mensaje de saludo. 
+
+const express = require("express");
+
+const app = express();
+
+app.get("/greeting", (req, res) => {
+  res.send("Hello! ");
+});
+
+app.listen(3000, () => {
+  console.log("Server listening on port 3000");
+});
+
+
+
+ 2. Explica la función de un middleware en Express y proporciona un ejemplo práctico. 
+
+    Un middleware es una función que se ejecuta entre la solicitud y la respuesta en una aplicación Express y se puede usar para
+
+    1. Validar la solicitud
+    2. Modificar la solicitud o la respuesta
+    3. Manejar errores
+    4. Registrar la actividad
+
+const express = require("express");
+
+const app = express();
+
+const authMiddleware = (req, res, next) => {
+  // Validate user authentication
+  if (!req.headers.authorization) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  next();
+};
+
+app.use(authMiddleware);
+
+app.get("/protected-route", (req, res) => {
+  // The route can only be accessed if authentication is valid
+  res.send("Access granted!");
+});
+
+app.listen(3000, () => {
+  console.log("Server listening on port 3000");
+});
+
+
+
+3. Convierte el siguiente código de callback a una promesa en Node.js. 
+
+const fs = require("fs");
+
+const readFile = () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile("file.txt", "utf8", (err, data) => {
+      if (err) reject(err);
+      resolve(data);
+    });
+  });
+};
+
+readFile()
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+
+
+4. ¿Cómo manejarías errores asíncronos en Node.js? Proporciona un ejemplo. 
+
+se pueden usar bloques try...catch o el módulo async/await
+ 
+const fs = require("fs");
+
+const tryCatchExample = async () => {
+  try {
+    const data = await fs.promises.readFile("file.txt", "utf8");
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+tryCatchExample();
+
+
+5. Explica cómo funciona la autenticación JWT y cómo podrías implementarla en una aplicación Node.js.
+
+
+La autenticación JWT (JSON Web Token) es un método para verificar la identidad de un usuario y se crea un token firmado con información del usuario y se envía con cada solicitud el servidor verifica la firma del token para autenticar al usuario
+
+Implementación en Node.js:
+
+   1. Instalar las librerías jsonwebtoken y dotenv
+   2. Crear un archivo .env con la clave secreta del token
+   3. Generar el token en el servidor
+   4.  Enviar el token con la solicitud en el encabezado Authorization
+   5.  Verificar el token en el servidor antes de procesar la solicitud
+
+
+6. Crea un modelo de mongoose para una entidad "Usuario" con campos de nombre, correo electrónico y contraseña. 
+
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+});
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+
+7. ¿Qué es Jest y cómo se usaría para realizar pruebas unitarias en una aplicación Node.js? 
+
+Jest es un framework de pruebas unitarias para JavaScript se puede usar 
+para probar diferentes aspectos de una aplicación Node.js, como la lógica de negocio, 
+la interacción con la base de datos o la API 
+
+
+const { sum } = require("../utils");
+
+describe("Sum function", () => {
+  it("should return the sum of two numbers", () => {
+    const result = sum(1, 2);
+    expect(result).toBe(3);
+  });
+});
+
+8. Crea un controlador en ASP.NET Core con una acción que devuelva un JSON con información básica.
+
+{
+  "Nombre": "Edwar",
+  "Version": "31",
+  "Fecha": "2023-11-14"
+}
+
+
+public class InfoController : Controller
+{
+    public IActionResult GetInfo()
+    {
+        var info = new
+        {
+            Nombre = "Edwar",
+            Version = "31",
+            Fecha = DateTime.Now.ToString("yyyy-MM-dd")
+        };
+
+        return Json(info);
+    }
+}
+
+9. Explica la diferencia entre Code First y Database First en Entity Framework Core. 
+
+Code First:
+Punto de partida: Modelo de código
+Control: Más control sobre el esquema
+Beneficios: Flexible, fácil de evolucionar
+Desventajas: Requiere cambios manuales para sincronizar con la base de datos
+
+Database First:
+Punto de partida: Base de datos existente
+Control: Más control sobre la base de datos existente
+Beneficios: Eficiente para trabajar con bases de datos existentes
+Desventajas: Menos flexible para cambios en el esquema
+
+Elección personal:
+Code First: Nuevos proyectos, desarrollo flexible
+Database First: Bases de datos existentes, control sobre la base de datos
+
+10. ¿Cómo agregarías un middleware personalizado en ASP.NET Core? Proporciona un ejemplo.
+
+Creo la clase de middleware:
+Defin0 una clase pública que implemente la interfaz IMiddleware
+Implementaria el método InvokeAsync(HttpContext context, RequestDelegate next)
+
+Registraria el middleware en el contenedor de dependencias:
+Usaria el método UseMiddleware en Startup.Configure
+Especificaria la clase de middleware como parámetro
+
+public class MiMiddleware
+{
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        // Registrar la solicitud
+        Console.WriteLine($"{context.Request.Method} {context.Request.Path}");
+
+        // Llamar al siguiente middleware
+        await next(context);
+
+        // Registrar la respuesta
+        Console.WriteLine($"{context.Response.StatusCode}");
+    }
+}
+
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        // ...
+
+        app.UseMiddleware<MiMiddleware>();
+
+        // ...
+    }
+}
+
+
+11. Describe la diferencia entre autenticación y autorización en el contexto de ASP.NET Core.
+
+La autenticación es el "¿Quién eres tú?" y la autorización es el "¿Qué puedes hacer?", 
+el contexto a pesar de ser diferente en plataforma sigue siendo el mismo en terminos geenrales
+en su nucleo
+
+12. ¿Cómo manejarías excepciones no controladas en ASP.NET Core? Proporciona un ejemplo. 
+
+Existen dos mecanismos principales para manejar excepciones no controladas:
+
+1. Middleware de página de errores para desarrolladores:
+
+Solo se utiliza en entornos de desarrollo
+Muestra una página de error detallada con información sobre la excepción
+
+ public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        // ...
+
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        // ...
+    }
+}
+
+Middleware del controlador de excepciones:
+
+Se utiliza en todos los entornos
+Registra la excepción y puede redirigir a una página de error personalizada
+
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        // ...
+
+        app.UseExceptionHandler("/Error");
+
+        // ...
+    }
+}
+
+public class ErrorController : Controller
+{
+    public IActionResult Index()
+    {
+        // Registrar la excepción
+        var exception = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+        // Mostrar una vista de error personalizada
+        return View();
+    }
+}
+
+
+13. ¿Qué son las Razor Pages en ASP.NET Core y cuándo podrías preferirlas sobre los controladores y vistas tradicionales? 
+
+Es un modelo de programación alternativo a MVC en ASP.NET Core que facilita la creación de aplicaciones web centradas en páginas
+lo preferiria solo si la página web tiene una lógica de servidor simple, Razor Pages puede ser una forma más rápida y sencilla de implementarla
+
+14. Describe cómo podrías hacer que una aplicación Node.js consuma una API REST desarrollada en ASP.NET Core.
+
+personalmente utilizaria axios en lugar de fetch, pero ya quedaria en eleccion del TL en base al legado del codigo
+
+  1. Instalar Axios con npm: npm install axios
+  2. Importar Axios en tu archivo JavaScript: import axios from 'axios'
+  3. Crear una variable con la URL de la API: const url = 'https://api.example.com/endpoint'
+  4. Hacer una solicitud a la API
+  5. GET: axios.get(url)
+  6. POST: axios.post(url, data)
+  7. PUT: axios.put(url, data)
+  8. DELETE: axios.delete(url)
+  9. Manejar la respuesta de la API:
+  10. res.data contiene el cuerpo de la respuesta
+  11. res.status contiene el código de estado HTTP
+
+15. Explica la diferencia entre la lectura de archivos en modo sincrónico y asincrónico en Node.js. 
+
+La lectura de archivos en Node.js puede ser síncrona o asincrónica lalectura síncrona bloquea el hilo de ejecución principal 
+hasta que se completa la lectura del archivo, mientras que la lectura asincrónica no lo hace, y ;a lectura síncrona es más simple 
+pero puede ser lenta y bloquear el hilo de ejecución principal en cambio la lectura asincrónica es más eficiente pero puede ser más compleja de implementar 
+entonces la mejor opción para leer un archivo en Node.js depende del tamaño del archivo, si la lectura del archivo es crítica para el flujo del programa 
+y claro esta la experiencia del desarrollador con la programación asincrónica
+
+16. ¿Qué son los WebSockets y cómo se implementarían en una aplicación Node.js para permitir una comunicación bidireccional en tiempo real? 
+
+Es una tecnología de comunicación bidireccional en tiempo real entre un cliente web y un servidor
+Permite enviar y recibir datos de forma continua sin necesidad de recargar la página
+
+Para implemntarla en Node Utilizaria una biblioteca como Socket.io o ws.
+crearia un servidor WebSocket en Node que escuche las conexiones de los clientes, 
+enviar y recibir mensajes entre el servidor y los clientes
+
+17. ¿Por qué es beneficioso usar la inyección de dependencias en ASP.NET Core y cómo se implementa? 
+
+Facilita la creación de código desacoplado y modular
+Mejora la testabilidad del código
+Permite una mayor flexibilidad y facilidad de mantenimiento
+Promueve la reutilización de código
+Reduce la complejidad del código
+
+ASP.NET Core tiene un contenedor de servicios integrado, las dependencias se registran en el contenedor de servicios,
+las dependencias se registran en el contenedor de servicios
+y las clases que necesitan dependencias las solicitan al constructor
+
+18. Menciona al menos tres buenas prácticas de seguridad en una aplicación Node.j.
+
+Autenticación y autorización (JWT), validaciones de entradas para evitar inyecciones de codigo, actualizacion de dependencias regularmente
+implemnetar HTTPS, implementar Helmet  
+
+19. ¿Cómo crearías un servicio web SOAP en ASP.NET Core? 
+
+  1. Instalaria el paquete NuGet Microsoft.AspNetCore.WebServices.Extensions.
+  2. Se define la interfaz del servicio web (métodos).
+  3. Se Implementa la interfaz (clase).
+  4 . Y se expone el servicio web en Startup.cs
+
+10. Explica brevemente cómo podrías utilizar Docker para contenerizar aplicaciones desarrolladas en Node.js y ASP.NET Core. 
+
+  1. Crear un Dockerfile (segun sea el caso): Define el entorno de ejecución, instala las dependencias y configura la aplicación
+  2. Construir la imagen de Docker: Ejecuta docker build para crear la imagen a partir del Dockerfile
+  3. Ejecutar la aplicación: Ejecuta docker run para iniciar la aplicación en un contenedor
+
